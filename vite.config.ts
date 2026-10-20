@@ -1,0 +1,21 @@
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  server: {
+    port: 5200,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+      '/api/baidu-ocr': {
+        target: 'https://aip.baidubce.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/baidu-ocr/, ''),
+      },
+    },
+  },
+})
